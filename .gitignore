@@ -1,0 +1,8 @@
+build/
+*.spr
+*.spr.png
+dessin.h
+dessin.tset
+dessin.tmap
+*.bin
+*_emu
