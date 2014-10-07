@@ -1,4 +1,4 @@
-NAME = BeatBlocks
+NAME = beat_blk
 
 GAME_C_FILES = main.c mod32.c
 GAME_BINARY_FILES = dessin.tset dessin.tmap cursor.spr
