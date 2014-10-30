@@ -436,9 +436,9 @@ void processRow() {
     break;
   }
 
-  if(note != NONOTE || Player.lastAmigaPeriod[channel] &&
-     effectNumber != VIBRATO && effectNumber != VIBRATOVOLUMESLIDE &&
-     !(effectNumber == 0xE && effectParameterX == NOTEDELAY))
+  if(note != NONOTE || (Player.lastAmigaPeriod[channel] &&
+       effectNumber != VIBRATO && effectNumber != VIBRATOVOLUMESLIDE &&
+       !(effectNumber == 0xE && effectParameterX == NOTEDELAY)))
    Mixer.channelFrequency[channel] = Player.amiga / Player.lastAmigaPeriod[channel];
 
   if(note != NONOTE)
@@ -652,13 +652,13 @@ uint16_t mixer(uint16_t *buffer) {
    FatBuffer.channelSampleNumber[channel] = Mixer.channelSampleNumber[channel];
   }
 
-  current = FatBuffer.channels[channel][(samplePointer - FatBuffer.samplePointer[channel]) & FATBUFFERSIZE - 1];
-  next = FatBuffer.channels[channel][(samplePointer + 1 - FatBuffer.samplePointer[channel]) & FATBUFFERSIZE - 1];
+  current = FatBuffer.channels[channel][(samplePointer - FatBuffer.samplePointer[channel]) & (FATBUFFERSIZE - 1)];
+  next = FatBuffer.channels[channel][(samplePointer + 1 - FatBuffer.samplePointer[channel]) & (FATBUFFERSIZE - 1)];
 
   out = current;
 
   // Integer linear interpolation
-  out += (next - current) * (Mixer.channelSampleOffset[channel] & (1 << DIVIDER) - 1) >> DIVIDER;
+  out += (next - current) * ((Mixer.channelSampleOffset[channel] & (1 << DIVIDER)) - 1) >> DIVIDER;
 
   // Upscale to BITDEPTH
   out <<= BITDEPTH - 8;
@@ -683,7 +683,7 @@ uint16_t mixer(uint16_t *buffer) {
  SoundBuffer.writePos &= SOUNDBUFFERSIZE - 1;
  */
 
- return (sumL + (1 << BITDEPTH - 1))<<8 | ((sumR+ (1 << BITDEPTH - 1)));
+ return (sumL + (1 <<(BITDEPTH - 1)))<<8 | ((sumR+ (1 <<(BITDEPTH - 1))));
 
 }
 

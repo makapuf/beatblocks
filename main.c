@@ -26,11 +26,7 @@ extern const unsigned char cursor_spr[];
 
 #include "mod32.h"
 
-#ifdef EMULATOR
-#define MOD_PATH "./"
-#else
-#define MOD_PATH ""
-#endif
+#define MOD_PATH "DRUMKITS"
 
 #define C4NOTE 208 //104/2 // base note used
 #define DELTA_BPM 5 // BPM increment
@@ -76,6 +72,7 @@ void loadNextFile() {
 		dotPointer = strrchr(fileInfo.fname, '.');
 	} while(dotPointer == NULL || strcasecmp(dotPointer, ".mod"));
 
+	f_chdir (MOD_PATH);
 	if(fileInfo.fname[0] != 0) {
 		f_open(&file, fileInfo.fname, FA_READ);
 		message("Opened File: %s ",fileInfo.fname);
@@ -88,7 +85,7 @@ void loadNextFile() {
 const int channel_y[8] = {6,8,10,12,15,17,19,21}; // Y position of each channel
 // mini tilemaps
 const uint8_t pad_tmap[][4] = { {76,77,83,84},{78,79,85,86} };
-
+ 
 //                             0   1   2   3   4   5   6   7   8   9
 const uint8_t numbers_hi[] = {123,124,125,125,126,127,127,125,123,123};
 const uint8_t numbers_lo[] = {135,136,137,138,139,140,141,136,141,140};
@@ -142,9 +139,9 @@ void handle_display()
     	{
     		uint8_t s = Player.currentPattern.sampleNumber[step*4][chn];
     		// 0 or 1 ! inverse channel mapping (if possible, else just use 0).
-    		if (s) {
+    		if (s) {    			
     			tmap_blit(sampler.bg,step2x(step), chan2y(chn), pad_header, pad_tmap[s==chn+1 ? 0 : 1]);
-    		}
+    		}   		
     	}
     
     print_num(drumkit_pos,sampler.drumkit,2);
@@ -174,7 +171,10 @@ void changePattern()
 
 void handle_input(void)
 {
+	#ifndef NO_USB
+
 	static uint16_t prev_buttons;
+
 	int b = gamepad_buttons[0] & ~prev_buttons; // new buttons
 
 	if (gamepad_buttons[0] & gamepad_X) { // control - key ? (press X before)
@@ -234,6 +234,7 @@ void handle_input(void)
 		}
 	}
 	prev_buttons = gamepad_buttons[0];
+	#endif
 }
 
 
@@ -281,14 +282,8 @@ void game_frame()
 {
 	handle_input();
 	handle_display();
-
-	blitter_frame();
 }
 
-void game_line()
-{
-	blitter_line();
-}
 
 void game_snd_buffer(uint16_t *stream, int size)
 {

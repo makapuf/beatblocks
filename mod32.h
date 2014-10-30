@@ -10,9 +10,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-// #define SYSCLK 80000000L
-//#define SYSCLK 96000000L
-
 #define SAMPLERATE BITBOX_SAMPLERATE     
 #define BITDEPTH BITBOX_SAMPLE_BITDEPTH 
 #define FATBUFFERSIZE 2048                        // File system buffers CHANNELS * 2048 = 8192 bytes of memory
