@@ -128,7 +128,7 @@ inline int chan2y(int chan)
 void handle_display()
 {
 
-	const uint32_t pad_header = 2<<24 | 2<<16 | TMAP_U8;
+	const uint32_t pad_header = TMAP_HEADER(2,2,TSET_16,TMAP_U8);
 
 	tmap_blit(sampler.bg,0,0,dessin_header, dessin_tmap);
     // display line headers with instruments IDs. 
@@ -244,10 +244,8 @@ void game_init()
 {
 	// Graphics : one bg + one cursor (simple)
 	blitter_init();
-	sampler.bg = tilemap_new (dessin_tset, 640, 480, TILEMAP_6464u8, vram);
-	sampler.bg->y=0;
-	sampler.cursor = sprite_new((uint32_t *)cursor_spr);
-	sampler.cursor->z=-1;
+	sampler.bg = tilemap_new (dessin_tset, 640, 480, TMAP_HEADER(64,64,TSET_16, TMAP_U8), vram);
+	sampler.cursor = sprite_new((uint32_t *)cursor_spr,5,5,-1);
 	sampler.cursor_x = 5;
 	sampler.cursor_y = 5;
 
@@ -273,8 +271,6 @@ void game_init()
 	Player.follow_song = 0;
 
 	// inject a loop to start of current pattern ? 
-	audio_on=1;
-
 }
 
 
