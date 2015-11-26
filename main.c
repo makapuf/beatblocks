@@ -114,13 +114,13 @@ void print_num(const int pos[2], int num, const int digits)
 }
 
 // translate a beat to position on screen (in tiles)
-inline int step2x(int step)
+static inline int step2x(int step)
 {
 	if (step==16) step=15; //  can happen momentarily 
 	return 3 + step*2 + step/4;
 }
 
-inline int chan2y(int chan)
+static inline int chan2y(int chan)
 {
 	return channel_y[chan];
 }
