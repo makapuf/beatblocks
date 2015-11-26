@@ -3,6 +3,7 @@ NAME = beat_blk
 GAME_C_FILES = main.c mod32.c
 GAME_BINARY_FILES = dessin.tset dessin.tmap cursor.spr
 USE_ENGINE = 1
+USE_SDCARD = 1
 
 include $(BITBOX)/lib/bitbox.mk
 
