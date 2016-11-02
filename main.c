@@ -14,8 +14,8 @@
 #include <strings.h>
 #include <string.h>
 
-#include <bitbox.h>
-#include <blitter.h>
+#include "bitbox.h"
+#include "lib/blitter/blitter.h"
 
 #include <fatfs/ff.h>
 #include <fatfs/diskio.h>
